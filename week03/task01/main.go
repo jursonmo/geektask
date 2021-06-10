@@ -34,7 +34,8 @@ func main() {
 	eg.Go(func() error {
 		select {
 		case <-ctx.Done():
-			timeoutCtx, _ := context.WithTimeout(context.Background(), time.Second*3)
+			timeoutCtx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+			defer cancel() //stop timer
 			err := server.Shutdown(timeoutCtx)
 			fmt.Println("server.Shutdown err:", err)
 			return ctx.Err()
