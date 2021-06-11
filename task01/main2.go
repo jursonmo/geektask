@@ -4,6 +4,8 @@ package main
 为了避免以后更换"database/sql"时，业务层调用不用做修改，这里自定义自己错误：DaoErrNoRow
 dao 返回错误时，用"github.com/pkg/errors" wrap 保存调用栈信息。方便上层%+v 查看调用栈信息。
 上层只需要判断errors.Is(err,DaoErrNoRow) 就知道底层错误是 DaoErrNoRow. 代表 NoRow.
+
+sql.ErrNoRows 错误需要进行转换，转换为自己预先定义 sentinel error，使用 pkg/errors.Warp 包装，屏蔽底层数据库的差异.
 */
 import (
 	"database/sql"
