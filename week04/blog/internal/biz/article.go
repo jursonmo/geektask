@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-//领域对象
+//领域对象 DO ?
 type Article struct {
 	Id        int64
 	Title     string
@@ -29,9 +29,8 @@ func NewArticleUsecase(repo ArticleRepo) *ArticleUsecase {
 	return &ArticleUsecase{repo: repo}
 }
 
-func (au *ArticleUsecase) GetArticle(id int) (*Article, error) {
-
-	return nil, nil
+func (au *ArticleUsecase) GetArticle(id int64) (*Article, error) {
+	return au.repo.GetArticle(context.Background(), id)
 }
 
 func (au *ArticleUsecase) CreateArticle() error {

@@ -23,7 +23,8 @@ func NewHttpServer(as *service.ArticleService) *MyHttpServer {
 		ar := v1.ArticleReq{}
 		vars := mux.Vars(r)
 		if id, ok := vars["id"]; !ok {
-			ar.Id, _ = strconv.Atoi(id)
+			i, _ := strconv.Atoi(id)
+			ar.Id = int64(i)
 		}
 		article := as.GetArticle(ar.Id)
 		data, _ := json.Marshal(article)

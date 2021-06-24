@@ -10,5 +10,5 @@ type ArticleDTO struct {
 
 //
 type ArticleReq struct {
-	Id int
+	Id int64
 }

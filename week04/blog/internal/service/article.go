@@ -18,7 +18,7 @@ func NewArticleService(logger log.Logger, au *biz.ArticleUsecase) *ArticleServic
 	}
 }
 
-func (as *ArticleService) GetArticle(id int) *v1.ArticleDTO {
+func (as *ArticleService) GetArticle(id int64) *v1.ArticleDTO {
 	as.log.Infof("GetArticle")
 	article, err := as.au.GetArticle(id)
 	return &v1.ArticleDTO{
