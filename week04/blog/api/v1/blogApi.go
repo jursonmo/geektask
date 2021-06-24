@@ -7,3 +7,8 @@ type ArticleDTO struct {
 	Title   string `json:"title"`
 	Content []byte `json:"content"`
 }
+
+//
+type ArticleReq struct {
+	Id int
+}

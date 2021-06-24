@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	v1 "github.com/jursonmo/geektask/week04/blog/api/v1"
 	"github.com/jursonmo/geektask/week04/blog/internal/service"
 )
 
@@ -15,15 +16,11 @@ type MyHttpServer struct {
 	server *http.Server
 }
 
-type articleReq struct {
-	Id int
-}
-
 func NewHttpServer(as *service.ArticleService) *MyHttpServer {
 	//mux := http.NewServeMux()
 	r := mux.NewRouter()
 	r.HandleFunc("/api/v1/article/{id}", func(rw http.ResponseWriter, r *http.Request) {
-		ar := articleReq{}
+		ar := v1.ArticleReq{}
 		vars := mux.Vars(r)
 		if id, ok := vars["id"]; !ok {
 			ar.Id, _ = strconv.Atoi(id)
