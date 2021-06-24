@@ -1,6 +1,8 @@
 package service
 
 import (
+	"time"
+
 	"github.com/go-kratos/kratos/v2/log"
 	v1 "github.com/jursonmo/geektask/week04/blog/api/v1"
 	"github.com/jursonmo/geektask/week04/blog/internal/biz"
@@ -29,10 +31,19 @@ func (as *ArticleService) GetArticle(id int64) *v1.ArticleDTO {
 	}
 }
 
-func (as *ArticleService) CreateArticle() *v1.ArticleDTO {
+func (as *ArticleService) CreateArticle(acr *v1.ArticleCreateReq) *v1.ArticleCreateResp {
 	as.log.Infof("CreateArticle")
-	err := as.au.CreateArticle()
-	return &v1.ArticleDTO{
+	//deep copy: DTO-->DO
+	ba := &biz.Article{
+		UserID:    acr.UserId,
+		Id:        acr.Id,
+		Title:     acr.Title,
+		Content:   string(acr.Content),
+		CreatedAt: time.Now(),
+	}
+	err := as.au.CreateArticle(ba)
+	return &v1.ArticleCreateResp{
 		Err: err,
+		Id:  acr.Id,
 	}
 }

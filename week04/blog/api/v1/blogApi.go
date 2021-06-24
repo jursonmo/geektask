@@ -8,7 +8,17 @@ type ArticleDTO struct {
 	Content []byte `json:"content"`
 }
 
-//
+//get artcile req
 type ArticleReq struct {
 	Id int64
+}
+
+type ArticleCreateReq struct {
+	UserId int64
+	ArticleDTO
+}
+
+type ArticleCreateResp struct {
+	Err error
+	Id  int64
 }

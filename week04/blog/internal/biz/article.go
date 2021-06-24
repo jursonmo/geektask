@@ -7,6 +7,7 @@ import (
 
 //领域对象 DO ?
 type Article struct {
+	UserID    int64
 	Id        int64
 	Title     string
 	Content   string
@@ -33,7 +34,8 @@ func (au *ArticleUsecase) GetArticle(id int64) (*Article, error) {
 	return au.repo.GetArticle(context.Background(), id)
 }
 
-func (au *ArticleUsecase) CreateArticle() error {
-	//TODO: 决定数据是否持久化
+func (au *ArticleUsecase) CreateArticle(article *Article) error {
+	//TODO: User 是否有权限创建文章, 决定数据是否持久化
+	au.repo.CreateArticle(context.Background(), article)
 	return nil
 }

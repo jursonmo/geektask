@@ -34,8 +34,6 @@ func NewArticleRepo(data *Data, logger log.Logger) biz.ArticleRepo {
 	}
 }
 
-var articleID int
-
 func (ar *articleRepo) GetArticle(ctx context.Context, id int64) (*biz.Article, error) {
 	// get data from dataDriver
 	var articleData *ArticleData
@@ -53,7 +51,6 @@ func (ar *articleRepo) GetArticle(ctx context.Context, id int64) (*biz.Article, 
 }
 
 func (ar *articleRepo) CreateArticle(ctx context.Context, article *biz.Article) error {
-	articleID++
 	//TODO: DO-->PO
 	return nil
 }
