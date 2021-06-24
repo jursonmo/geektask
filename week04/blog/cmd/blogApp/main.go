@@ -9,12 +9,13 @@ import (
 )
 
 var Name = "blogApp"
-var Version = "v1"
+var Version = "v1.0.0"
 
 func newApp(logger log.Logger, hs *server.MyHttpServer, ss *server.SignalServer) *kratos.App {
 	return kratos.New(
 		kratos.Name(Name),
 		kratos.Version(Version),
+		kratos.Signal(os.Interrupt, os.Kill),
 		kratos.Metadata(map[string]string{}),
 		kratos.Logger(logger),
 		kratos.Server(
@@ -32,5 +33,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	app.Run()
+	err = app.Run()
+	if err != nil {
+		panic(err)
+	}
 }

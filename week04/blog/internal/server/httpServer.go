@@ -15,7 +15,7 @@ type MyHttpServer struct {
 
 func NewHttpServer(as *service.ArticleService) *MyHttpServer {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/blog/v1/GetArticle", func(rw http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/v1/GetArticle", func(rw http.ResponseWriter, r *http.Request) {
 		article := as.GetArticle()
 		data, _ := json.Marshal(article)
 		rw.Write(data)
