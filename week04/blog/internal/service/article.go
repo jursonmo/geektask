@@ -23,11 +23,12 @@ func NewArticleService(logger log.Logger, au *biz.ArticleUsecase) *ArticleServic
 func (as *ArticleService) GetArticle(id int64) *v1.ArticleDTO {
 	as.log.Infof("GetArticle")
 	article, err := as.au.GetArticle(id)
+	_ = err
 	return &v1.ArticleDTO{
-		Err:     err,
+		//Err:     err,
 		Id:      article.Id,
 		Title:   article.Title,
-		Content: []byte(article.Content),
+		Content: article.Content,
 	}
 }
 
@@ -42,8 +43,9 @@ func (as *ArticleService) CreateArticle(acr *v1.ArticleCreateReq) *v1.ArticleCre
 		CreatedAt: time.Now(),
 	}
 	err := as.au.CreateArticle(ba)
+	_ = err
 	return &v1.ArticleCreateResp{
-		Err: err,
-		Id:  acr.Id,
+		//Err: err,
+		Id: acr.Id,
 	}
 }

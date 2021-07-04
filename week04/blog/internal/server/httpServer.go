@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 	"time"
@@ -32,14 +33,24 @@ func (hs *MyHttpServer) RegisterApi(as *service.ArticleService) {
 		data, _ := json.Marshal(article)
 		rw.Write(data)
 	}).Methods("GET")
+
 	r.HandleFunc("/api/v1/article/", func(rw http.ResponseWriter, req *http.Request) {
 		acr := &v1.ArticleCreateReq{}
+		//req.ParseForm()
+		//just support json for now
 		if req.Header.Get("Content-Type") != "application/json" {
 			return
 		}
-		buf := make([]byte, req.ContentLength)
-		req.Body.Read(buf)
-		err := json.Unmarshal(buf, &acr)
+		// buf := make([]byte, req.ContentLength)
+		// req.Body.Read(buf)
+		// err := json.Unmarshal(buf, &acr)
+		// dec := json.NewDecoder(req.Body)
+		// err := dec.Decode(&arc)
+		reqData, err := ioutil.ReadAll(req.Body)
+		if err != nil {
+			return
+		}
+		err = json.Unmarshal(reqData, &acr)
 		if err != nil {
 			return
 		}
@@ -49,22 +60,20 @@ func (hs *MyHttpServer) RegisterApi(as *service.ArticleService) {
 	}).Methods("POST")
 }
 
+/*
+br := bufio.NewReader(r.Body)
+buf := make([]byte, 128)
+for {
+    _, err := io.ReadFull(br, buf)
+    if err != nil {
+        break
+    }
+    // ...
+}
+*/
 func NewHttpServer(as *service.ArticleService) *MyHttpServer {
 	//mux := http.NewServeMux()
 	r := mux.NewRouter()
-	/*
-		r.HandleFunc("/api/v1/article/{id}", func(rw http.ResponseWriter, r *http.Request) {
-			ar := v1.ArticleReq{}
-			vars := mux.Vars(r)
-			if id, ok := vars["id"]; !ok {
-				i, _ := strconv.Atoi(id)
-				ar.Id = int64(i)
-			}
-			article := as.GetArticle(ar.Id)
-			data, _ := json.Marshal(article)
-			rw.Write(data)
-		})
-	*/
 	server := &http.Server{
 		Addr:    "0.0.0.0:8080",
 		Handler: r,

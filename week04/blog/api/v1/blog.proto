@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package blog.api.v1;
+
+option go_package = "api/v1;v1";
+option java_multiple_files = true;
+option java_package = "blog.api.v1";
+
+import "google/api/annotations.proto";
+// the validate rules:
+// https://github.com/envoyproxy/protoc-gen-validate
+//import "validate/validate.proto";
+
+service BlogService {
+    rpc GetArticle (GetArticleRequest) returns (GetArticleReply) {
+        option (google.api.http) = {
+            get: "/v1/article/{id}"
+        };
+    }
+    rpc CreateArticle (CreateArticleRequest) returns (CreateArticleReply) {
+        option (google.api.http) = {
+            post: "/v1/article/{title}"
+            body: "*"
+        };
+    }
+}
+
+message ArticleDTO {
+    int64 id = 1;
+    string title = 2;
+    string content = 3;
+}
+
+message GetArticleRequest {
+    int64 id = 1 ;
+}
+
+message GetArticleReply {
+    ArticleDTO article = 1;
+}
+
+message CreateArticleRequest {
+    string title = 1;
+    string content = 2;
+}
+
+message CreateArticleReply {
+    ArticleDTO article = 1;
+}
+
