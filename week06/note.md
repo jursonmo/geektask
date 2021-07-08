@@ -1,3 +1,5 @@
+#### 第六周， 评论系统学习记录
+
 一. 对于读，流程：
    1.  commom_service: 先去redis cache 读
    2.  cache miss 后， singalflight 去读db，同时只有一个线程去读db.
@@ -22,4 +24,4 @@
 
 四；总结
  + commom_service 归并回源读db, 归并回源 向kafka 投递相同指令，甚至实现lru 缓存缓存指令， 和lru 缓存redis数据，避免读db，  
-+ common_job 预判的缓存是否存在来放弃构建缓存， 
++ common_job 预判的缓存是否存在来放弃构建缓存， 也能减少读db.
