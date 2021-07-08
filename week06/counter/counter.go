@@ -24,7 +24,7 @@ type BucketCounter struct {
 }
 
 type Bucket struct {
-	counters [MaxEventType]Counter
+	counters [MaxEventType]Counter //可以记录多种事件的计数, 每种事件计数之间避免伪共享
 }
 
 type count = int64
@@ -38,7 +38,7 @@ type Counter struct {
 }
 
 //totalTime: 持续统计时间
-//bucketSizeInMs: 多少毫秒一个窗口
+//bucketSizeInMs: 多少毫秒一个采样窗口
 func NewBucketCounter(totalTime time.Duration, bucketSizeInMs int) *BucketCounter {
 	if bucketSizeInMs == 0 {
 		bucketSizeInMs = 100 //
@@ -78,7 +78,7 @@ func (bc *BucketCounter) GetValue(eventType int) int64 {
 	elapse := time.Since(bc.startTime)
 	currentIndex := int(int64(elapse/bc.windowTime) % int64(len(bc.buckets)))
 
-	//统计非当前窗口所有值相加
+	//有size+1个buckets(窗口), 统计非当前窗口所有值相加
 	result := int64(0)
 	for i := 0; i < len(bc.buckets); i++ {
 		if i == currentIndex {
