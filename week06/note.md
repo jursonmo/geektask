@@ -3,7 +3,7 @@
 一. 对于读，流程：
    1.  commom_service: 先去redis cache 读
    2.  cache miss 后， singalflight 去读db，同一个key同时只有一个线程去读db.
-   3.  读完db,   如果直接往redis 构建缓存，高并发的情况下，可能都卡在redis, 程序可能oom.
+   3.  读完db,   如果直接往redis 构建缓存，高并发的情况下，可能都卡在redis,程序也因为要构建大量缓存而可能oom.
         + 所以 进程内存里 生成一个lru临时小缓存， 过期时间短，让kafka 完成异步构建就行， 小缓存，避免过多占用进程内存
         + 如果某个topic 热点，很大qps 也可能把redis 打死，这个时候，也可以动态滑动统计最近top N  的热点，在进程内存构建缓存，牺牲短时一致性; 或者把topic key 加上后缀 key_1,key_2,key_3 分散到不同redis 节点，也可以避免单个节点负载过大的问题。
    4.  以评论topic 为key , singalfight 向kafka 投递指令；同时实现一个lru 指令缓存，避免3-5秒短时间内向kafka 投递相同的构建缓存指令。
