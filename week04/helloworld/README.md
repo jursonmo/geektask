@@ -9,5 +9,7 @@ go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 protoc -I . --go_out=plugins=grpc:./proto ./proto/helloworld.proto  --proto_path=`pwd`/proto_api
 
 生成helloworld.pb.gw.go
-protoc -I . --grpc-gateway_out ./     --grpc-gateway_opt logtostderr=true     --grpc-gateway_opt paths=source_relative  --proto_path=`pwd`/proto_api ./proto/helloworld.proto
+protoc -I . --grpc-gateway_out ./     --grpc-gateway_opt logtostderr=true  \ 
+--grpc-gateway_opt paths=source_relative  \
+--proto_path=`pwd`/proto_api ./proto/helloworld.proto
 ```
