@@ -7,11 +7,11 @@
 
 源码路径：https://github.com/go-kratos/aegis/blob/main/circuitbreaker/sre/sre.go
 
-为了更容易阅读源码，先去看下 google sre 算法的原理：[Handling Overload – Google SRE books](https://sre.google/sre-book/handling-overload/)
+为了更容易阅读源码，先去看下 google sre 过载保护算法的原理：[Handling Overload – Google SRE books](https://sre.google/sre-book/handling-overload/)
 
-go-zero 貌似也是用google sre 算法实现熔断器。
+go-zero 貌似也是用google sre 过载保护算法实现熔断器。
 
-##### google sre 核心的算法：
+##### google sre 过载保护核心的算法：
 rejectProba = max(0,(requests−K∗accepts)/(requests+1))
 
 从上面的公式可以看到，
